@@ -399,6 +399,8 @@ declare namespace XlsxPopulate {
     text: string;
     width: string;
     height: string;
+    textAlign: string;
+    horizontalAlignment: string
   }
 
   class ConditionalFormatting {
