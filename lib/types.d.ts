@@ -93,6 +93,8 @@ declare namespace XlsxPopulate {
       refersTo: string | Cell | Range | Row | Column
     ): Workbook;
     delete(): Workbook;
+    drawings(): Drawing[];
+    drawings(name: string): Drawing | undefined;
     find(
       pattern: string | RegExp,
       replacement?: string | Function
@@ -256,6 +258,31 @@ declare namespace XlsxPopulate {
     width(width: number): Column;
     workbook(): Workbook;
     addPageBreak(): Column;
+  }
+
+  class Drawing {
+    id(): string;
+    name(): string;
+    name(newName: string): boolean;
+    image(): Object;
+    image(imagePath: string): Drawing;
+    image(image: Blob): Drawing;
+    svgImage(): Object;
+    svgImage(imagePath: string): Drawing;
+    svgImage(image: Blob): Drawing;
+    description(): string;
+    description(newDesription: string): Drawing;
+    title(): string;
+    title(newTitle: string): Drawing;
+    path(): string;
+    path(newPath: string): Drawing;
+    svgPath(): string;
+    svgPath(newPath: string): Drawing;
+    from(): { col: number; row: number; colOffset: number; rowOffset: number };
+    from(address: string): Drawing;
+    to(): { col: number; row: number; colOffset: number; rowOffset: number };
+    to(address: string): Drawing;
+    size(): string;    
   }
 
   class PanesOptions {
