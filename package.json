@@ -1,6 +1,6 @@
 {
   "name": "@jpdewing/xlsx-populate",
-  "version": "4.4.0",
+  "version": "4.4.1",
   "private": false,
   "description": "Excel XLSX parser/generator written in JavaScript with Node.js and browser support, jQuery/d3-style method chaining, and a focus on keeping existing workbook features and styles in tact.",
   "license": "MIT",
@@ -18,7 +18,9 @@
     "prebuild": "yarn docs",
     "build": "gulp browser",
     "prerelease": "yarn build",
-    "release": "bash scripts/publish.sh"
+    "release": "bash scripts/publish.sh",
+    "dev": "node examples/drawing/index.js",
+    "debug": "node --inspect-brk=0.0.0.0:9231 examples/drawing/index.js"
   },
   "author": "Dave T. Johnson <dave@dtjohnson.net>",
   "contributors": [

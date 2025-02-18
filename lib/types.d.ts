@@ -95,6 +95,7 @@ declare namespace XlsxPopulate {
     delete(): Workbook;
     drawings(): Drawing[];
     drawings(name: string): Drawing | undefined;
+    drawings(name: string, file: Blob): Drawing;
     find(
       pattern: string | RegExp,
       replacement?: string | Function
