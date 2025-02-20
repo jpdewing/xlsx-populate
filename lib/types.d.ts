@@ -3,6 +3,27 @@
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 // TypeScript Version: 3.4
 export = XlsxPopulate;
+
+type ReferenceObject = {
+    type: 'range' | 'cell' | 'columnRange' | 'column' | 'rowRange' | 'row';
+    sheetName: string;
+    startColumnAnchored: boolean;
+    startColumnName: string;
+    startColumnNumber: number;
+    startRowAnchored: boolean;
+    startRowNumber: number;
+    endColumnAnchored: boolean;
+    endColumnName: string;
+    endColumnNumber: number;
+    endRowAnchored: boolean;
+    endRowNumber: number;
+    columnAnchored: boolean;
+    columnName: string;
+    columnNumber: number;
+    rowAnchored: boolean;
+    rowNumber: number;
+}
+
 declare class XlsxPopulate {
   static MIME_TYPE: string;
   static dateToNumber(date: Date): number;
@@ -23,6 +44,13 @@ declare class XlsxPopulate {
     opts?: any
   ): Promise<XlsxPopulate.Workbook>;
   static numberToDate(number: number): Date;
+  
+  static helpers: {
+    columnNameToNumber(name: string): number;
+    columnNumberToName(number: number): string;
+    fromAddress(address: string): ReferenceObject;
+    toAddress(ref: ReferenceObject): string; 
+  }
 }
 
 declare namespace XlsxPopulate {
@@ -322,6 +350,7 @@ declare namespace XlsxPopulate {
     style(name: string, value: any): Range;
     style(styles: { [key: string]: Function | any[][] | any }): Range;
     style(style: Style): Range;
+    style(callback: Function): Range;
     tap(callback: Function): Range;
     thru(callback: Function): any;
     value(): any[][];
@@ -368,7 +397,7 @@ declare namespace XlsxPopulate {
     rotateTextDown?: boolean;
     verticalText?: boolean;
     fill?: SolidFill | PatternFill | GradientFill;
-    border?: Borders | Border;
+    border?: Borders | Border | string | boolean;
     borderColor?: Color | string;
     borderStyle?: string;
     leftBorderColor?: Color | string;
