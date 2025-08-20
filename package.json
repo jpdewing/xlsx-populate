@@ -15,9 +15,9 @@
     "e2e-parse": "jasmine JASMINE_CONFIG_PATH=test/e2e-parse/jasmine.json",
     "test:windows": "npm-run-all test e2e-parse e2e-generate",
     "docs": "gulp docs",
-    "prebuild": "yarn docs",
+    "prebuild": "pnpm run docs",
     "build": "gulp browser",
-    "prerelease": "yarn build",
+    "prerelease": "pnpm run build",
     "release": "bash scripts/publish.sh",
     "dev": "node examples/drawing/index.js",
     "debug": "node --inspect-brk=0.0.0.0:9231 examples/drawing/index.js"

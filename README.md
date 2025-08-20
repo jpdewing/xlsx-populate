@@ -1093,6 +1093,8 @@ A cell
         * [.value()](#Cell+value) ⇒ [<code>Range</code>](#Range)
         * [.workbook()](#Cell+workbook) ⇒ [<code>Workbook</code>](#Workbook)
         * [.addHorizontalPageBreak()](#Cell+addHorizontalPageBreak) ⇒ [<code>Cell</code>](#Cell)
+        * [.meta()](#Cell+meta) ⇒ <code>object</code> \| <code>undefined</code>
+        * [.meta(metadata)](#Cell+meta) ⇒ [<code>Cell</code>](#Cell)
     * _inner_
         * [~tapCallback](#Cell..tapCallback) ⇒ <code>undefined</code>
         * [~thruCallback](#Cell..thruCallback) ⇒ <code>\*</code>
@@ -1452,6 +1454,26 @@ Append horizontal page break after the cell.
 
 **Kind**: instance method of [<code>Cell</code>](#Cell)  
 **Returns**: [<code>Cell</code>](#Cell) - the cell.  
+<a name="Cell+meta"></a>
+
+#### cell.meta() ⇒ <code>object</code> \| <code>undefined</code>
+Gets the metadata of the cell.
+
+**Kind**: instance method of [<code>Cell</code>](#Cell)  
+**Returns**: <code>object</code> \| <code>undefined</code> - The metadata of the cell.  
+<a name="Cell+meta"></a>
+
+#### cell.meta(metadata) ⇒ [<code>Cell</code>](#Cell)
+Sets the metadata of the cell (this does not translate to XML, used for internal purposes).
+Useful for assigning arbitrary data to the cell that can be accessed during spreadsheet creation.
+
+**Kind**: instance method of [<code>Cell</code>](#Cell)  
+**Returns**: [<code>Cell</code>](#Cell) - The cell.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| metadata | <code>object</code> \| <code>undefined</code> | The metadata to set. |
+
 <a name="Cell..tapCallback"></a>
 
 #### Cell~tapCallback ⇒ <code>undefined</code>
@@ -1812,6 +1834,7 @@ A range of cells.
         * [.style(name, value)](#Range+style) ⇒ [<code>Range</code>](#Range)
         * [.style(styles)](#Range+style) ⇒ [<code>Range</code>](#Range)
         * [.style(style)](#Range+style) ⇒ [<code>Range</code>](#Range)
+        * [.style(callback)](#Range+style) ⇒ [<code>Range</code>](#Range)
         * [.tap(callback)](#Range+tap) ⇒ [<code>Range</code>](#Range)
         * [.thru(callback)](#Range+thru) ⇒ <code>\*</code>
         * [.value()](#Range+value) ⇒ <code>Array.&lt;Array.&lt;\*&gt;&gt;</code>
@@ -2020,7 +2043,7 @@ Gets multiple styles for each cell.
 <a name="Range+style"></a>
 
 #### range.style(name, callback) ⇒ [<code>Range</code>](#Range)
-Set the style in each cell to the result of a function called for each.
+Set the style in each cell to a single style value using the result of a function callback.
 
 **Kind**: instance method of [<code>Range</code>](#Range)  
 **Returns**: [<code>Range</code>](#Range) - The range.  
@@ -2079,6 +2102,18 @@ Sets to a specific style
 | Param | Type | Description |
 | --- | --- | --- |
 | style | [<code>Style</code>](#new_Style_new) | Style object given from stylesheet.createStyle |
+
+<a name="Range+style"></a>
+
+#### range.style(callback) ⇒ [<code>Range</code>](#Range)
+Set the style in each cell to a style object using the result of a function callback.
+
+**Kind**: instance method of [<code>Range</code>](#Range)  
+**Returns**: [<code>Range</code>](#Range) - The range.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callback | [<code>mapCallback</code>](#Range..mapCallback) | The callback to provide value for the cell. |
 
 <a name="Range+tap"></a>
 
@@ -3399,6 +3434,13 @@ A workbook.
     * [.property(name, value)](#Workbook+property) ⇒ [<code>Workbook</code>](#Workbook)
     * [.property(properties)](#Workbook+property) ⇒ [<code>Workbook</code>](#Workbook)
     * [.properties()](#Workbook+properties) ⇒ <code>CoreProperties</code>
+    * [.clearProperties()](#Workbook+clearProperties) ⇒ <code>CoreProperties</code>
+    * [.customProperty(name)](#Workbook+customProperty) ⇒ <code>\*</code>
+    * [.customProperty(names)](#Workbook+customProperty) ⇒ <code>object.&lt;string, \*&gt;</code>
+    * [.customProperty(name, value)](#Workbook+customProperty) ⇒ [<code>Workbook</code>](#Workbook)
+    * [.customProperty(custom)](#Workbook+customProperty) ⇒ [<code>Workbook</code>](#Workbook)
+    * [.customProperties()](#Workbook+customProperties) ⇒ <code>CustomProperties</code>
+    * [.clearCustomProperties()](#Workbook+clearCustomProperties) ⇒ <code>CustomProperties</code>
     * [.toFileAsync(path, [opts])](#Workbook+toFileAsync) ⇒ <code>Promise.&lt;undefined&gt;</code>
     * [.cloneSheet(from, name, [indexOrBeforeSheet])](#Workbook+cloneSheet) ⇒ [<code>Sheet</code>](#Sheet)
 
@@ -3593,6 +3635,76 @@ Get access to core properties object
 
 **Kind**: instance method of [<code>Workbook</code>](#Workbook)  
 **Returns**: <code>CoreProperties</code> - The core properties.  
+<a name="Workbook+clearProperties"></a>
+
+#### workbook.clearProperties() ⇒ <code>CoreProperties</code>
+Clears all the existing workbook properties
+
+**Kind**: instance method of [<code>Workbook</code>](#Workbook)  
+**Returns**: <code>CoreProperties</code> - The core properties.  
+<a name="Workbook+customProperty"></a>
+
+#### workbook.customProperty(name) ⇒ <code>\*</code>
+Gets an individual custom property.
+
+**Kind**: instance method of [<code>Workbook</code>](#Workbook)  
+**Returns**: <code>\*</code> - The custom property.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>string</code> | The name of the custom property. |
+
+<a name="Workbook+customProperty"></a>
+
+#### workbook.customProperty(names) ⇒ <code>object.&lt;string, \*&gt;</code>
+Gets multiple properties.
+
+**Kind**: instance method of [<code>Workbook</code>](#Workbook)  
+**Returns**: <code>object.&lt;string, \*&gt;</code> - Object whose keys are the custom property names and values are the properties.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| names | <code>Array.&lt;string&gt;</code> | The names of the properties. |
+
+<a name="Workbook+customProperty"></a>
+
+#### workbook.customProperty(name, value) ⇒ [<code>Workbook</code>](#Workbook)
+Sets an individual custom property.
+
+**Kind**: instance method of [<code>Workbook</code>](#Workbook)  
+**Returns**: [<code>Workbook</code>](#Workbook) - The workbook.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>string</code> | The name of the custom property. |
+| value | <code>\*</code> | The value to set. |
+
+<a name="Workbook+customProperty"></a>
+
+#### workbook.customProperty(custom) ⇒ [<code>Workbook</code>](#Workbook)
+Sets multiple custom properties.
+
+**Kind**: instance method of [<code>Workbook</code>](#Workbook)  
+**Returns**: [<code>Workbook</code>](#Workbook) - The workbook.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| custom | <code>object.&lt;string, \*&gt;</code> | properties - Object whose keys are the property names and values are the values to set. |
+
+<a name="Workbook+customProperties"></a>
+
+#### workbook.customProperties() ⇒ <code>CustomProperties</code>
+Get access to custom properties object
+
+**Kind**: instance method of [<code>Workbook</code>](#Workbook)  
+**Returns**: <code>CustomProperties</code> - The custom properties.  
+<a name="Workbook+clearCustomProperties"></a>
+
+#### workbook.clearCustomProperties() ⇒ <code>CustomProperties</code>
+Clears all the existing workbook custom properties
+
+**Kind**: instance method of [<code>Workbook</code>](#Workbook)  
+**Returns**: <code>CustomProperties</code> - The custom properties.  
 <a name="Workbook+toFileAsync"></a>
 
 #### workbook.toFileAsync(path, [opts]) ⇒ <code>Promise.&lt;undefined&gt;</code>
@@ -3629,15 +3741,31 @@ Add a new sheet to the workbook.
 **Kind**: global namespace  
 
 * [XlsxPopulate](#XlsxPopulate) : <code>object</code>
-    * [.Promise](#XlsxPopulate.Promise) : <code>Promise</code>
-    * [.MIME_TYPE](#XlsxPopulate.MIME_TYPE) : <code>string</code>
-    * [.FormulaError](#XlsxPopulate.FormulaError) : [<code>FormulaError</code>](#FormulaError)
-    * [.RichText](#XlsxPopulate.RichText) : [<code>RichText</code>](#RichText)
-    * [.dateToNumber(date)](#XlsxPopulate.dateToNumber) ⇒ <code>number</code>
-    * [.fromBlankAsync()](#XlsxPopulate.fromBlankAsync) ⇒ [<code>Promise.&lt;Workbook&gt;</code>](#Workbook)
-    * [.fromDataAsync(data, [opts])](#XlsxPopulate.fromDataAsync) ⇒ [<code>Promise.&lt;Workbook&gt;</code>](#Workbook)
-    * [.fromFileAsync(path, [opts])](#XlsxPopulate.fromFileAsync) ⇒ [<code>Promise.&lt;Workbook&gt;</code>](#Workbook)
-    * [.numberToDate(number)](#XlsxPopulate.numberToDate) ⇒ <code>Date</code>
+    * _instance_
+        * [.columnNumberToName(number)](#XlsxPopulate+columnNumberToName) ⇒ <code>string</code>
+    * _static_
+        * [.Promise](#XlsxPopulate.Promise) : <code>Promise</code>
+        * [.MIME_TYPE](#XlsxPopulate.MIME_TYPE) : <code>string</code>
+        * [.FormulaError](#XlsxPopulate.FormulaError) : [<code>FormulaError</code>](#FormulaError)
+        * [.RichText](#XlsxPopulate.RichText) : [<code>RichText</code>](#RichText)
+        * [.dateToNumber(date)](#XlsxPopulate.dateToNumber) ⇒ <code>number</code>
+        * [.fromBlankAsync()](#XlsxPopulate.fromBlankAsync) ⇒ [<code>Promise.&lt;Workbook&gt;</code>](#Workbook)
+        * [.fromDataAsync(data, [opts])](#XlsxPopulate.fromDataAsync) ⇒ [<code>Promise.&lt;Workbook&gt;</code>](#Workbook)
+        * [.fromFileAsync(path, [opts])](#XlsxPopulate.fromFileAsync) ⇒ [<code>Promise.&lt;Workbook&gt;</code>](#Workbook)
+        * [.numberToDate(number)](#XlsxPopulate.numberToDate) ⇒ <code>Date</code>
+        * [.columnNameToNumber(name)](#XlsxPopulate.columnNameToNumber) ⇒ <code>number</code>
+
+<a name="XlsxPopulate+columnNumberToName"></a>
+
+#### xlsxPopulate.columnNumberToName(number) ⇒ <code>string</code>
+Convert a column number to a name.
+
+**Kind**: instance method of [<code>XlsxPopulate</code>](#XlsxPopulate)  
+**Returns**: <code>string</code> - The name.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| number | <code>number</code> | The column number. |
 
 <a name="XlsxPopulate.Promise"></a>
 
@@ -3721,6 +3849,18 @@ Convert an Excel number to a date.
 | Param | Type | Description |
 | --- | --- | --- |
 | number | <code>number</code> | The number. |
+
+<a name="XlsxPopulate.columnNameToNumber"></a>
+
+#### XlsxPopulate.columnNameToNumber(name) ⇒ <code>number</code>
+Convert a column name to a number.
+
+**Kind**: static method of [<code>XlsxPopulate</code>](#XlsxPopulate)  
+**Returns**: <code>number</code> - The number.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>string</code> | The column name. |
 
 <a name="_"></a>
 
