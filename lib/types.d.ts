@@ -58,6 +58,8 @@ declare namespace XlsxPopulate {
     activeSheet(): Sheet;
     activeSheet(sheet: Sheet | string | number): Workbook;
     addSheet(name: string, indexOrBeforeSheet?: number | string | Sheet): Sheet;
+    clearProperties(): CoreProperties;
+    clearCustomProperties(): CustomProperties;
     definedName(): string[];
     definedName(name: string): undefined | string | Cell | Range | Row | Column;
     definedName(
@@ -96,6 +98,11 @@ declare namespace XlsxPopulate {
     property(properties: { [key: string]: any }): Workbook;
     property(name: string, value: any): Workbook;
     properties(): CoreProperties;
+    customProperty(name: string): any;
+    customProperty(names: string[]): { [key: string]: any };
+    customProperty(properties: { [key: string]: any }): Workbook;
+    customProperty(name: string, value: any): Workbook;
+    customProperties(): CustomProperties;
     toFileAsync(path: string, opts?: object): Promise<void>;
     cloneSheet(
       from: Sheet,
@@ -266,6 +273,8 @@ declare namespace XlsxPopulate {
     value(value: string | boolean | number | null | undefined): Cell;
     value(value: (string | boolean | number | null | undefined | Date)[][]): Cell;
     value(): Range;
+    meta(): object | undefined;
+    meta(metadata: object | undefined): Cell;
     workbook(): Workbook;
     addHorizontalPageBreak(): Cell;
   }
@@ -326,6 +335,10 @@ declare namespace XlsxPopulate {
     [key: string]: any;
   }
 
+   class CustomProperties {
+    [key: string]: any;
+  }
+
   class Range {
     address(opts?: object): string;
     cell(ri: number, ci: number): Cell;
@@ -346,7 +359,8 @@ declare namespace XlsxPopulate {
     startCell(): Cell;
     style(name: string): any[][];
     style(names: string[]): { [key: string]: any[][] };
-    style(name: string): Range;
+    style(name: string, callback: Function): Range;
+    style(name: string, values: any[][]): Range;
     style(name: string, value: any): Range;
     style(styles: { [key: string]: Function | any[][] | any }): Range;
     style(style: Style): Range;
