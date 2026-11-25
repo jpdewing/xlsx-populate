@@ -30,3 +30,6 @@ node_modules
 .idea
 
 browser/
+
+# Packed builds (pnpm pack)
+*.tgz

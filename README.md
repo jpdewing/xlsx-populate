@@ -998,6 +998,12 @@ An object representing a gradient fill.
 <dt><a href="#Column">Column</a></dt>
 <dd><p>A column.</p>
 </dd>
+<dt><a href="#CustomProperties">CustomProperties</a></dt>
+<dd><p>The custom document properties (docProps/custom.xml).</p>
+<p>The loaded property nodes are kept as they are. Only the node of a property that is set is changed, so
+properties that are never touched are saved exactly as loaded: names, values, value types, pids, fmtids,
+linkTargets and order.</p>
+</dd>
 <dt><a href="#FormulaError">FormulaError</a></dt>
 <dd><p>A formula error (e.g. #DIV/0!).</p>
 </dd>
@@ -1682,6 +1688,87 @@ Append vertical page break after the column.
 
 **Kind**: instance method of [<code>Column</code>](#Column)  
 **Returns**: [<code>Column</code>](#Column) - the column.  
+<a name="CustomProperties"></a>
+
+### CustomProperties
+The custom document properties (docProps/custom.xml).
+
+The loaded property nodes are kept as they are. Only the node of a property that is set is changed, so
+properties that are never touched are saved exactly as loaded: names, values, value types, pids, fmtids,
+linkTargets and order.
+
+**Kind**: global class  
+
+* [CustomProperties](#CustomProperties)
+    * [.set(name, value)](#CustomProperties+set) ⇒ [<code>CustomProperties</code>](#CustomProperties)
+    * [.get(name)](#CustomProperties+get) ⇒ <code>string</code> \| <code>number</code> \| <code>boolean</code> \| <code>Date</code> \| <code>undefined</code>
+    * [.names()](#CustomProperties+names) ⇒ <code>Array.&lt;string&gt;</code>
+    * [.delete(name)](#CustomProperties+delete) ⇒ [<code>CustomProperties</code>](#CustomProperties)
+    * [.clear()](#CustomProperties+clear) ⇒ [<code>CustomProperties</code>](#CustomProperties)
+    * [.toXml()](#CustomProperties+toXml) ⇒ <code>Object</code>
+
+<a name="CustomProperties+set"></a>
+
+#### customProperties.set(name, value) ⇒ [<code>CustomProperties</code>](#CustomProperties)
+Sets a specific property. The value type written matches the value given: a string is written as
+vt:lpwstr, a boolean as vt:bool, an integer as vt:i4 (vt:r8 if it does not fit), any other number as
+vt:r8 and a Date as vt:filetime. An existing property keeps its place, pid and other attributes.
+Setting null or undefined deletes the property.
+
+**Kind**: instance method of [<code>CustomProperties</code>](#CustomProperties)  
+**Returns**: [<code>CustomProperties</code>](#CustomProperties) - CustomProperties.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>string</code> | The name of the property. |
+| value | <code>string</code> \| <code>number</code> \| <code>boolean</code> \| <code>Date</code> \| <code>null</code> \| <code>undefined</code> | The value of the property. |
+
+<a name="CustomProperties+get"></a>
+
+#### customProperties.get(name) ⇒ <code>string</code> \| <code>number</code> \| <code>boolean</code> \| <code>Date</code> \| <code>undefined</code>
+Get a specific property. The value is typed by the property's value type: a string, number, boolean
+or Date. The text of a value type that is not known is returned as a string.
+
+**Kind**: instance method of [<code>CustomProperties</code>](#CustomProperties)  
+**Returns**: <code>string</code> \| <code>number</code> \| <code>boolean</code> \| <code>Date</code> \| <code>undefined</code> - The property value or undefined if there is no such property.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>string</code> | The name of the property. |
+
+<a name="CustomProperties+names"></a>
+
+#### customProperties.names() ⇒ <code>Array.&lt;string&gt;</code>
+Gets the names of all the properties, in document order.
+
+**Kind**: instance method of [<code>CustomProperties</code>](#CustomProperties)  
+**Returns**: <code>Array.&lt;string&gt;</code> - The names.  
+<a name="CustomProperties+delete"></a>
+
+#### customProperties.delete(name) ⇒ [<code>CustomProperties</code>](#CustomProperties)
+Deletes a specific property.
+
+**Kind**: instance method of [<code>CustomProperties</code>](#CustomProperties)  
+**Returns**: [<code>CustomProperties</code>](#CustomProperties) - CustomProperties.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>string</code> | The name of the property. |
+
+<a name="CustomProperties+clear"></a>
+
+#### customProperties.clear() ⇒ [<code>CustomProperties</code>](#CustomProperties)
+Clears all the existing properties
+
+**Kind**: instance method of [<code>CustomProperties</code>](#CustomProperties)  
+**Returns**: [<code>CustomProperties</code>](#CustomProperties) - CustomProperties.  
+<a name="CustomProperties+toXml"></a>
+
+#### customProperties.toXml() ⇒ <code>Object</code>
+Convert the collection to an XML object.
+
+**Kind**: instance method of [<code>CustomProperties</code>](#CustomProperties)  
+**Returns**: <code>Object</code> - The XML.  
 <a name="FormulaError"></a>
 
 ### FormulaError
@@ -3435,12 +3522,12 @@ A workbook.
     * [.property(properties)](#Workbook+property) ⇒ [<code>Workbook</code>](#Workbook)
     * [.properties()](#Workbook+properties) ⇒ <code>CoreProperties</code>
     * [.clearProperties()](#Workbook+clearProperties) ⇒ <code>CoreProperties</code>
-    * [.customProperty(name)](#Workbook+customProperty) ⇒ <code>\*</code>
+    * [.customProperty(name)](#Workbook+customProperty) ⇒ <code>string</code> \| <code>number</code> \| <code>boolean</code> \| <code>Date</code> \| <code>undefined</code>
     * [.customProperty(names)](#Workbook+customProperty) ⇒ <code>object.&lt;string, \*&gt;</code>
     * [.customProperty(name, value)](#Workbook+customProperty) ⇒ [<code>Workbook</code>](#Workbook)
     * [.customProperty(custom)](#Workbook+customProperty) ⇒ [<code>Workbook</code>](#Workbook)
-    * [.customProperties()](#Workbook+customProperties) ⇒ <code>CustomProperties</code>
-    * [.clearCustomProperties()](#Workbook+clearCustomProperties) ⇒ <code>CustomProperties</code>
+    * [.customProperties()](#Workbook+customProperties) ⇒ [<code>CustomProperties</code>](#CustomProperties)
+    * [.clearCustomProperties()](#Workbook+clearCustomProperties) ⇒ [<code>CustomProperties</code>](#CustomProperties)
     * [.toFileAsync(path, [opts])](#Workbook+toFileAsync) ⇒ <code>Promise.&lt;undefined&gt;</code>
     * [.cloneSheet(from, name, [indexOrBeforeSheet])](#Workbook+cloneSheet) ⇒ [<code>Sheet</code>](#Sheet)
 
@@ -3644,11 +3731,11 @@ Clears all the existing workbook properties
 **Returns**: <code>CoreProperties</code> - The core properties.  
 <a name="Workbook+customProperty"></a>
 
-#### workbook.customProperty(name) ⇒ <code>\*</code>
-Gets an individual custom property.
+#### workbook.customProperty(name) ⇒ <code>string</code> \| <code>number</code> \| <code>boolean</code> \| <code>Date</code> \| <code>undefined</code>
+Gets an individual custom property. The value is typed by the property's value type: a string, number, boolean or Date.
 
 **Kind**: instance method of [<code>Workbook</code>](#Workbook)  
-**Returns**: <code>\*</code> - The custom property.  
+**Returns**: <code>string</code> \| <code>number</code> \| <code>boolean</code> \| <code>Date</code> \| <code>undefined</code> - The custom property or undefined if there is none of that name.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3669,7 +3756,7 @@ Gets multiple properties.
 <a name="Workbook+customProperty"></a>
 
 #### workbook.customProperty(name, value) ⇒ [<code>Workbook</code>](#Workbook)
-Sets an individual custom property.
+Sets an individual custom property. The value type written matches the value given: string, number, boolean or Date. Every other property is left as it was loaded. Setting null or undefined deletes the property.
 
 **Kind**: instance method of [<code>Workbook</code>](#Workbook)  
 **Returns**: [<code>Workbook</code>](#Workbook) - The workbook.  
@@ -3677,7 +3764,7 @@ Sets an individual custom property.
 | Param | Type | Description |
 | --- | --- | --- |
 | name | <code>string</code> | The name of the custom property. |
-| value | <code>\*</code> | The value to set. |
+| value | <code>string</code> \| <code>number</code> \| <code>boolean</code> \| <code>Date</code> \| <code>null</code> \| <code>undefined</code> | The value to set. |
 
 <a name="Workbook+customProperty"></a>
 
@@ -3693,18 +3780,18 @@ Sets multiple custom properties.
 
 <a name="Workbook+customProperties"></a>
 
-#### workbook.customProperties() ⇒ <code>CustomProperties</code>
+#### workbook.customProperties() ⇒ [<code>CustomProperties</code>](#CustomProperties)
 Get access to custom properties object
 
 **Kind**: instance method of [<code>Workbook</code>](#Workbook)  
-**Returns**: <code>CustomProperties</code> - The custom properties.  
+**Returns**: [<code>CustomProperties</code>](#CustomProperties) - The custom properties.  
 <a name="Workbook+clearCustomProperties"></a>
 
-#### workbook.clearCustomProperties() ⇒ <code>CustomProperties</code>
+#### workbook.clearCustomProperties() ⇒ [<code>CustomProperties</code>](#CustomProperties)
 Clears all the existing workbook custom properties
 
 **Kind**: instance method of [<code>Workbook</code>](#Workbook)  
-**Returns**: <code>CustomProperties</code> - The custom properties.  
+**Returns**: [<code>CustomProperties</code>](#CustomProperties) - The custom properties.  
 <a name="Workbook+toFileAsync"></a>
 
 #### workbook.toFileAsync(path, [opts]) ⇒ <code>Promise.&lt;undefined&gt;</code>

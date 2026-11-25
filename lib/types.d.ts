@@ -98,10 +98,10 @@ declare namespace XlsxPopulate {
     property(properties: { [key: string]: any }): Workbook;
     property(name: string, value: any): Workbook;
     properties(): CoreProperties;
-    customProperty(name: string): any;
-    customProperty(names: string[]): { [key: string]: any };
-    customProperty(properties: { [key: string]: any }): Workbook;
-    customProperty(name: string, value: any): Workbook;
+    customProperty(name: string): CustomPropertyValue | undefined;
+    customProperty(names: string[]): { [key: string]: CustomPropertyValue | undefined };
+    customProperty(properties: { [key: string]: CustomPropertyValue | null | undefined }): Workbook;
+    customProperty(name: string, value: CustomPropertyValue | null | undefined): Workbook;
     customProperties(): CustomProperties;
     toFileAsync(path: string, opts?: object): Promise<void>;
     cloneSheet(
@@ -335,8 +335,22 @@ declare namespace XlsxPopulate {
     [key: string]: any;
   }
 
-   class CustomProperties {
-    [key: string]: any;
+  /**
+   * The value of a custom document property. Read, it is typed by the property's value type
+   * (vt:lpwstr -> string, vt:i4 / vt:r8 -> number, vt:bool -> boolean, vt:filetime -> Date).
+   * Written, the value type matches the value given.
+   */
+  type CustomPropertyValue = string | number | boolean | Date;
+
+  class CustomProperties {
+    /** Gets a property's typed value, or undefined if there is no such property. */
+    get(name: string): CustomPropertyValue | undefined;
+    /** Sets a property, leaving every other property as it was. null or undefined deletes it. */
+    set(name: string, value: CustomPropertyValue | null | undefined): CustomProperties;
+    /** Gets the names of all the properties, in document order. */
+    names(): string[];
+    delete(name: string): CustomProperties;
+    clear(): CustomProperties;
   }
 
   class Range {
