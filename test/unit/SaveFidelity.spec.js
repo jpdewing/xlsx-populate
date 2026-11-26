@@ -371,6 +371,55 @@ describe("Save fidelity", () => {
         });
     });
 
+    describe("added sheets", () => {
+        const WORKSHEET = "application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml";
+
+        itAsync("should give every sheet part a worksheet content type", () => {
+            return roundTripAsync(blank(), workbook => {
+                workbook.addSheet("Second");
+                workbook.cloneSheet(workbook.sheet(0), "Third");
+            })
+                .then(saved => saved.read("[Content_Types].xml"))
+                .then(types => {
+                    ["sheet1", "sheet2", "sheet3"].forEach(sheet => {
+                        expect(count(types, `<Override PartName="/xl/worksheets/${sheet}.xml" ContentType="${WORKSHEET}"/>`)).toBe(1);
+                    });
+                });
+        });
+
+        itAsync("should add no worksheet content type when no sheet is added", () => {
+            return JSZip.loadAsync(blank())
+                .then(zip => zip.file("[Content_Types].xml").async("string"))
+                .then(before => roundTripAsync(blank())
+                    .then(saved => saved.read("[Content_Types].xml"))
+                    .then(after => expect(count(after, WORKSHEET)).toBe(count(before, WORKSHEET))));
+        });
+    });
+
+    describe("the blank workbook", () => {
+        itAsync("should name no sheet in its document properties, so a renamed or added sheet leaves none stale", () => {
+            return roundTripAsync(blank(), workbook => {
+                workbook.sheet(0).name("First");
+                workbook.addSheet("Second");
+            })
+                .then(saved => saved.read("docProps/app.xml"))
+                .then(app => {
+                    expect(app).not.toContain("TitlesOfParts");
+                    expect(app).not.toContain("HeadingPairs");
+                    expect(app).not.toContain("Sheet1");
+                });
+        });
+
+        itAsync("should carry no file path from the machine it was made on", () => {
+            return roundTripAsync(blank())
+                .then(saved => saved.read("xl/workbook.xml"))
+                .then(workbook => {
+                    expect(workbook).not.toContain("absPath");
+                    expect(workbook).not.toContain("C:\\");
+                });
+        });
+    });
+
     describe("text that looks like a number", () => {
         const withNumericTextAsync = () => buildWorkbookAsync(({ zip, replace }) => {
             zip.file("xl/sharedStrings.xml",

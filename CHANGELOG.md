@@ -2,6 +2,12 @@
 
 Changes made in this fork (`@jpdewing/xlsx-populate`). Earlier fork changes are in the git history.
 
+## 4.4.4
+
+* A sheet added since load (`addSheet`, `cloneSheet`) is given its worksheet content type override on save. Before, it had none, and its part fell back to the `xml` default (`application/xml`). A loaded sheet keeps the content type it had.
+* The blank workbook (`fromBlankAsync`) names no sheet in `docProps/app.xml`: its `HeadingPairs` and `TitlesOfParts` are gone, so renaming or adding sheets no longer leaves a stale `Sheet1` list there. Its `workbook.xml` no longer carries `x15ac:absPath`, a file path from the machine the blank was made on.
+* The package no longer ships a packed `.tgz` of itself.
+
 ## 4.4.3
 
 The rule for this release: **a save loses nothing it was not asked to change.**
